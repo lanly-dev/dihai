@@ -4,7 +4,6 @@
     <Nullable>enable</Nullable>
     <OutDir>out</OutDir>
     <TargetFramework>net8.0</TargetFramework>
-    <!-- <LangVersion>10</LangVersion> -->
   </PropertyGroup>
 
   <ItemGroup>
