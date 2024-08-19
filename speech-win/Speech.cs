@@ -4,41 +4,40 @@ using System.Speech.Synthesis;
 
 namespace Speech
 {
-  class Speech
+  public class Speech
   {
     private const int MAX_CHARS = 45;
-    private static SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-    private static InstalledVoice[] voices = synthesizer.GetInstalledVoices().ToArray();
-
-    static Speech()
+    private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+    private InstalledVoice[] voices;
+    public Speech()
     {
       if (!isWindows())
       {
         throw new PlatformNotSupportedException("SpeechSynthesizer is only supported on Windows platforms.");
       }
       synthesizer.SetOutputToDefaultAudioDevice();
+      voices = synthesizer.GetInstalledVoices().ToArray();
     }
 
-    static void Main()
+    async void Main()
     {
-      Speak();
-      Speak("pneumonoultramicroscopicsilicovolcanoconiosis");
-      Speak("pneumonoultramicroscopicsilicovolcanoconiosis hello");
+      await Speak("pneumonoultramicroscopicsilicovolcanoconiosis");
+      await Speak("pneumonoultramicroscopicsilicovolcanoconiosis hello");
       // tryVoices();
       Console.WriteLine(isWindows());
       pc(GetVoiceNames());
     }
 
-    static void Speak(string text = "hello world, how are you?")
+    public async Task<object> Speak(dynamic input)
     {
-      if (text.Length > MAX_CHARS) {
-        synthesizer.Speak("Text too long");
-        return;
-      }
-      synthesizer.Speak(text);
+      return await Task.Run(() => {
+        if (input.Length > MAX_CHARS) synthesizer.Speak("Text too long");
+        else synthesizer.Speak(input);
+        return true;
+      });
     }
 
-    static List<string> GetVoiceNames()
+    List<string> GetVoiceNames()
     {
       List<string> names = new List<string>();
       foreach (InstalledVoice voice in voices)
@@ -48,12 +47,12 @@ namespace Speech
       return names;
     }
 
-    private static bool isWindows()
+    private bool isWindows()
     {
       return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     }
 
-    private static void tryVoices()
+    private void tryVoices()
     {
       Speak($"There are {voices.Length} installed voices.");
       List<string> names = GetVoiceNames();
@@ -65,7 +64,7 @@ namespace Speech
     }
 
     // Print collection
-    private static void pc<T>(IEnumerable<T> collection)
+    private void pc<T>(IEnumerable<T> collection)
     {
       Console.WriteLine(string.Join(", ", collection));
     }

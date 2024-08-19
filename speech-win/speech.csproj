@@ -3,8 +3,10 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <OutputType>Exe</OutputType>
+    <OutputType>library</OutputType>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <RootNamespace>speech</RootNamespace>
+    <SelfContained>true</SelfContained>
     <TargetFramework>net8.0-windows</TargetFramework>
   </PropertyGroup>
 
